@@ -1,9 +1,10 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Mint, Token, TokenAccount};
+use anchor_spl::token::{self, Mint, Token, TokenAccount, CloseAccount};
 
-declare_id!("Fg6PaFpoGXkYsidMpWTK6W2BeZ7FEfcYkg476zPFsLnS");
+declare_id!("AiYE4rgco3Awa3daGst4pojStCkUQHGrFsacS72CwWXt");
 
  // REPLACE ADDRESS of diam mint by running solana address -k .keys/usdc_mint.json
+ // Replace for Devnet Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr
 pub const USDC_MINT_ADDRESS: &str = "8fFnX9WSPjJEADtG5jQvQQptzfFmmjd6hrW7HjuUT8ur";
   
 
@@ -26,7 +27,7 @@ pub mod tokens {
         Ok(())
     }
 
-     pub fn mint_to(ctx: Context<MintTo>, amount: u64) -> Result<()> {
+    pub fn mint_to(ctx: Context<MintTo>, amount: u64) -> Result<()> {
         let merchant = ctx.accounts.merchant.key();
 
 
@@ -59,7 +60,7 @@ pub mod tokens {
         Ok(())
     }
 
-       pub fn burn(ctx: Context<Burn>, amount: u64,) -> Result<()> {
+    pub fn burn(ctx: Context<Burn>, amount: u64,) -> Result<()> {
 
         let cpi_ctx = CpiContext::new(
             ctx.accounts.token_program.to_account_info(),
@@ -90,6 +91,54 @@ pub mod tokens {
         let usdc_amount = amount; // TODO: Change the formula
         token::transfer(cpi_ctx, usdc_amount)?;
         Ok(())
+    }
+
+    pub fn partial_payment(ctx: Context<PartialPayment>, token_amount: u64, usdc_amount: u64) -> Result<()> {
+
+        let cpi_ctx = CpiContext::new(
+            ctx.accounts.token_program.to_account_info(),
+            token::Burn {
+                mint: ctx.accounts.mint_pda.to_account_info(),
+                from: ctx.accounts.user_token.to_account_info(),
+                authority: ctx.accounts.user.to_account_info(),
+            },
+        );
+        token::burn(cpi_ctx, token_amount)?;
+
+        // transfer USDC from Program to merchant.
+        let (usdc_pda, usdc_bump) = Pubkey::find_program_address(&[ctx.accounts.usdc_mint.key().as_ref()], ctx.program_id);
+        let usdc_mint_address = ctx.accounts.usdc_mint.key();
+        let seeds = &[usdc_mint_address.as_ref(), &[usdc_bump]];
+        let signer = [&seeds[..]];
+
+        let cpi_ctx = CpiContext::new_with_signer(
+            ctx.accounts.token_program.to_account_info(),
+            token::Transfer {
+                from: ctx.accounts.program_usdc_token.to_account_info(),
+                authority: ctx.accounts.program_usdc_token.to_account_info(),
+                to: ctx.accounts.merchant_usdc_token.to_account_info(),
+            },
+            &signer,
+        );
+
+        let program_usdc_amount = token_amount; // TODO: Change the formula
+        token::transfer(cpi_ctx, program_usdc_amount)?;
+
+        // transfer USDC from user to merchant
+        let cpi_ctx = CpiContext::new(
+            ctx.accounts.token_program.to_account_info(),
+            token::Transfer {
+                from: ctx.accounts.user_usdc_token.to_account_info(),
+                authority: ctx.accounts.user.to_account_info(),
+                to: ctx.accounts.merchant_usdc_token.to_account_info(),
+            }
+        );
+
+        let program_usdc_amount = token_amount; // TODO: Change the formula
+        token::transfer(cpi_ctx, program_usdc_amount)?;
+        Ok(())
+
+
     }
 }
 
@@ -187,6 +236,48 @@ pub struct Burn<'info> {
     // `token::Burn.to`
     #[account(mut)]
     pub user_token: Box<Account<'info, TokenAccount>>,
+
+    // The authority allowed to mutate the above ⬆
+    pub user: Signer<'info>,
+
+    // see `token::Transfer.from`
+    #[account(
+        mut,
+        seeds = [USDC_MINT_ADDRESS.parse::<Pubkey>().unwrap().as_ref()],
+        bump,
+    )]
+    pub program_usdc_token: Box<Account<'info, TokenAccount>>,
+
+    //NEED TO CHECK
+    //Require for the PDA above 
+    #[account(
+        address = USDC_MINT_ADDRESS.parse::<Pubkey>().unwrap(),
+    )]
+    pub usdc_mint: Box<Account<'info, Mint>>,
+
+    // see `token::Transfer.to`
+    #[account(mut)]
+    pub merchant_usdc_token: Box<Account<'info, TokenAccount>>,
+
+    // SPL Token Program
+    pub token_program: Program<'info, Token>,
+
+}
+
+#[derive(Accounts)]
+// #[instruction(usdc_bump: u8, jun_bump:u8)]
+pub struct PartialPayment<'info> {
+    //NEED TO CHECK
+    // `token::Burn.mint`
+    #[account(mut)]
+    pub mint_pda: Box<Account<'info, Mint>>,
+
+    // `token::Burn.to`
+    #[account(mut)]
+    pub user_token: Box<Account<'info, TokenAccount>>,
+
+     #[account(mut)]
+    pub user_usdc_token: Account<'info, TokenAccount>,
 
     // The authority allowed to mutate the above ⬆
     pub user: Signer<'info>,
