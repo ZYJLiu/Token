@@ -1,11 +1,13 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::{self, Mint, Token, TokenAccount, CloseAccount};
+use anchor_spl::token::{self, Mint, Token, TokenAccount};
 
-declare_id!("AiYE4rgco3Awa3daGst4pojStCkUQHGrFsacS72CwWXt");
+declare_id!("DwY4TVmavvs63Znj28ccT1ryw8u3Y2Ctz88JfdY4UP7i");
 
- // REPLACE ADDRESS of diam mint by running solana address -k .keys/usdc_mint.json
+ // REPLACE ADDRESS of mint by running solana address -k .keys/usdc_mint.json
  // Replace for Devnet Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr
-pub const USDC_MINT_ADDRESS: &str = "8fFnX9WSPjJEADtG5jQvQQptzfFmmjd6hrW7HjuUT8ur";
+ // Replace for Localnet 8fFnX9WSPjJEADtG5jQvQQptzfFmmjd6hrW7HjuUT8ur
+ // DIAM Mint: ER7ZCAjos9LHVekkY7R6JQCC4efgRa44qFkJTomEGS5H
+pub const USDC_MINT_ADDRESS: &str = "Gh9ZwEmdLJ8DscKNTkTqPbNwLNNBjuSzaG9Vp2KGtKJr";
   
 
 #[program]

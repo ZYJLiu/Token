@@ -1,13 +1,13 @@
 [features]
 seeds = false
-[programs.localnet]
-token = "AiYE4rgco3Awa3daGst4pojStCkUQHGrFsacS72CwWXt"
+[programs.devnet]
+token = "DwY4TVmavvs63Znj28ccT1ryw8u3Y2Ctz88JfdY4UP7i"
 
 [registry]
 url = "https://anchor.projectserum.com"
 
 [provider]
-cluster = "localnet"
+cluster = "https://metaplex.devnet.rpcpool.com/"
 wallet = "/home/johnliu/.config/solana/id.json"
 
 [scripts]
