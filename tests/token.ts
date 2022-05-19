@@ -1,3 +1,6 @@
+// solana config set --url http://localhost:8899
+// solana config set --url https://metaplex.devnet.rpcpool.com/
+
 import * as anchor from "@project-serum/anchor";
 import { Program } from "@project-serum/anchor";
 import { Tokens } from "../target/types/tokens";
@@ -172,375 +175,262 @@ describe("token", () => {
     console.log("DIAM Mint:", merchantAccount2.mint.toString());
   });
 
-  // it("Mint DIAM Tokens", async () => {
-  //   // Get the token account of the fromWallet address, and if it does not exist, create it
-  //   const TokenAccount = await getOrCreateAssociatedTokenAccount(
-  //     connection,
-  //     await randomPayer(),
-  //     diamMint,
-  //     provider.wallet.publicKey
-  //   );
+  //   it("Mint DIAM Tokens", async () => {
+  //     // Get the token account of the fromWallet address, and if it does not exist, create it
+  //     const TokenAccount = await getOrCreateAssociatedTokenAccount(
+  //       connection,
+  //       await randomPayer(),
+  //       diamMint,
+  //       provider.wallet.publicKey
+  //     );
 
-  //   const usdcTokenAccount = await getOrCreateAssociatedTokenAccount(
-  //     connection,
-  //     await randomPayer(),
-  //     usdcMint,
-  //     provider.wallet.publicKey
-  //   );
+  //     const usdcTokenAccount = await getOrCreateAssociatedTokenAccount(
+  //       connection,
+  //       await randomPayer(),
+  //       usdcMint,
+  //       provider.wallet.publicKey
+  //     );
 
-  //   await mintTo(
-  //     connection, // connection to Solana
-  //     await randomPayer(), // randomPayer as payer for test
-  //     usdcMint, // USDC Token Mint
-  //     usdcTokenAccount.address, // User USDC Token Account (destination)
-  //     tokenAuthority, // Mint Authority (required as signer)
-  //     initialAmount
-  //   );
+  //     await mintTo(
+  //       connection, // connection to Solana
+  //       await randomPayer(), // randomPayer as payer for test
+  //       usdcMint, // USDC Token Mint
+  //       usdcTokenAccount.address, // User USDC Token Account (destination)
+  //       tokenAuthority, // Mint Authority (required as signer)
+  //       initialAmount
+  //     );
 
-  //   const data = await program.account.merchant.fetch(diam.publicKey);
-  //   console.log(data);
+  //     // const data = await program.account.merchant.fetch(diam.publicKey);
+  //     // console.log(data);
 
-  //   try {
-  //     await program.rpc.mintTo(new anchor.BN(initialAmount), {
-  //       accounts: {
-  //         merchant: diam.publicKey,
-  //         mintPda: diamMint,
-  //         userToken: TokenAccount.address,
-  //         userUsdcToken: usdcTokenAccount.address,
-  //         user: provider.wallet.publicKey,
-  //         programUsdcToken: usdcPDA,
-  //         tokenProgram: TOKEN_PROGRAM_ID,
-  //       },
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-
-  //   const balance = (
-  //     await connection.getTokenAccountBalance(TokenAccount.address)
-  //   ).value.amount;
-
-  //   const balance2 = (await connection.getTokenAccountBalance(usdcPDA)).value
-  //     .amount;
-
-  //   const balance3 = (
-  //     await connection.getTokenAccountBalance(usdcTokenAccount.address)
-  //   ).value.amount;
-
-  //   console.log("userDIAM Balance:", balance);
-  //   console.log("usdcPDA Balance:", balance2);
-  //   console.log("userUSDC Balance:", balance3);
-
-  //   // assert.equal(balance, initialAmount);
-  // });
-
-  // it("Mint DIAM Tokens", async () => {
-  //   const Wallet = Keypair.generate();
-  //   const AirdropSignature = await connection.requestAirdrop(
-  //     Wallet.publicKey,
-  //     LAMPORTS_PER_SOL
-  //   );
-
-  //   await connection.confirmTransaction(AirdropSignature);
-
-  //   // Get the token account of the fromWallet address, and if it does not exist, create it
-  //   // Get the token account of the fromWallet address, and if it does not exist, create it
-  //   const TokenAccount = await getOrCreateAssociatedTokenAccount(
-  //     connection,
-  //     await randomPayer(),
-  //     diamMint,
-  //     Wallet.publicKey
-  //   );
-
-  //   const usdcTokenAccount = await getOrCreateAssociatedTokenAccount(
-  //     connection,
-  //     await randomPayer(),
-  //     usdcMint,
-  //     Wallet.publicKey
-  //   );
-
-  //   await mintTo(
-  //     connection, // connection to Solana
-  //     await randomPayer(), // randomPayer as payer for test
-  //     usdcMint, // USDC Token Mint
-  //     usdcTokenAccount.address, // User USDC Token Account (destination)
-  //     tokenAuthority, // Mint Authority (required as signer)
-  //     initialAmount
-  //   );
-
-  //   const merchant = diam.publicKey;
-  //   const mintPda = diamMint;
-  //   const userToken = TokenAccount.address;
-  //   const userUsdcToken = usdcTokenAccount.address;
-  //   const user = Wallet.publicKey;
-  //   const programUsdcToken = usdcPDA;
-  //   const tokenProgram = TOKEN_PROGRAM_ID;
-  //   const programId = new PublicKey(
-  //     "31s721BSx3VGBed4swcAv5rs2WgK8kWEesQ6tkS4yKQ1"
-  //   );
-
-  //   const transaction = new Transaction();
-
-  //   const ix = createMintToInstruction(
-  //     {
-  //       merchant,
-  //       mintPda,
-  //       userToken,
-  //       userUsdcToken,
-  //       user,
-  //       programUsdcToken,
-  //     },
-  //     { amount: 1 }
-  //   );
-
-  //   transaction.add(ix);
-
-  //   const sig = await sendAndConfirmTransaction(connection, transaction, [
-  //     Wallet,
-  //   ]);
-  //   console.log(sig);
-
-  //       const balance = (
-  //         await connection.getTokenAccountBalance(TokenAccount.address)
-  //       ).value.amount;
-
-  //       const balance2 = (await connection.getTokenAccountBalance(usdcPDA))
-  //         .value.amount;
-
-  //       const balance3 = (
-  //         await connection.getTokenAccountBalance(usdcTokenAccount.address)
-  //       ).value.amount;
-
-  //       console.log("userDIAM Balance:", balance);
-  //       console.log("usdcPDA Balance:", balance2);
-  //       console.log("userUSDC Balance:", balance3);
-
-  // const instruction = new TransactionInstruction({
-  //   keys: [
-  //     {
-  //       pubkey: merchant,
-  //       isSigner: false,
-  //       isWritable: false,
-  //     },
-  //     {
-  //       pubkey: mintPda,
-  //       isSigner: false,
-  //       isWritable: true,
-  //     },
-  //     {
-  //       pubkey: userToken,
-  //       isSigner: false,
-  //       isWritable: true,
-  //     },
-  //     {
-  //       pubkey: userUsdcToken,
-  //       isSigner: false,
-  //       isWritable: true,
-  //     },
-  //     {
-  //       pubkey: user,
-  //       isSigner: true,
-  //       isWritable: false,
-  //     },
-  //     {
-  //       pubkey: programUsdcToken,
-  //       isSigner: false,
-  //       isWritable: true,
-  //     },
-  //     {
-  //       pubkey: tokenProgram,
-  //       isSigner: false,
-  //       isWritable: false,
-  //     },
-  //   ],
-  //   data: data,
-  //   programId,
-  // });
-
-  // assert.equal(balance, initialAmount);
-  // });
-
-  // it("Burn DIAM", async () => {
-  //   const Wallet = Keypair.generate();
-  //   const AirdropSignature = await connection.requestAirdrop(
-  //     Wallet.publicKey,
-  //     LAMPORTS_PER_SOL
-  //   );
-
-  //   await connection.confirmTransaction(AirdropSignature);
-
-  //   // Get the token account of the fromWallet address, and if it does not exist, create it
-  //   // Get the token account of the fromWallet address, and if it does not exist, create it
-  //   const TokenAccount = await getOrCreateAssociatedTokenAccount(
-  //     connection,
-  //     await randomPayer(),
-  //     diamMint,
-  //     Wallet.publicKey
-  //   );
-
-  //   const usdcTokenAccount = await getOrCreateAssociatedTokenAccount(
-  //     connection,
-  //     await randomPayer(),
-  //     usdcMint,
-  //     Wallet.publicKey
-  //   );
-
-  //   await mintTo(
-  //     connection, // connection to Solana
-  //     await randomPayer(), // randomPayer as payer for test
-  //     usdcMint, // USDC Token Mint
-  //     usdcTokenAccount.address, // User USDC Token Account (destination)
-  //     tokenAuthority, // Mint Authority (required as signer)
-  //     initialAmount
-  //   );
-
-  //   try {
-  //     await program.rpc.mintTo(new anchor.BN(initialAmount), {
-  //       accounts: {
-  //         merchant: diam.publicKey,
-  //         mintPda: diamMint,
-  //         userToken: TokenAccount.address,
-  //         userUsdcToken: usdcTokenAccount.address,
-  //         user: Wallet.publicKey,
-  //         programUsdcToken: usdcPDA,
-  //         tokenProgram: TOKEN_PROGRAM_ID,
-  //       },
-  //       signers: [Wallet],
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-
-  //   const balance = (
-  //     await connection.getTokenAccountBalance(TokenAccount.address)
-  //   ).value.amount;
-  //   console.log("Before Burn DIAM Token Balance:", balance);
-
-  //   const Merchant = Keypair.generate();
-
-  //   const merchantUsdcTokenAccount = await getOrCreateAssociatedTokenAccount(
-  //     connection,
-  //     await randomPayer(),
-  //     usdcMint,
-  //     Merchant.publicKey
-  //   );
-
-  //   try {
-  //     await program.rpc.burn(new anchor.BN(initialAmount / 2), {
-  //       accounts: {
-  //         mintPda: diamMint,
-  //         userToken: TokenAccount.address,
-  //         user: Wallet.publicKey,
-
-  //         programUsdcToken: usdcPDA,
-  //         usdcMint: usdcMintAddress,
-  //         merchantUsdcToken: merchantUsdcTokenAccount.address,
-
-  //         tokenProgram: TOKEN_PROGRAM_ID,
-  //       },
-  //       signers: [Wallet],
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-
-  //   const balance2 = (
-  //     await connection.getTokenAccountBalance(TokenAccount.address)
-  //   ).value.amount;
-
-  //   const balance5 = (
-  //     await connection.getTokenAccountBalance(merchantUsdcTokenAccount.address)
-  //   ).value.amount;
-
-  //   const balance6 = (await connection.getTokenAccountBalance(usdcPDA)).value
-  //     .amount;
-
-  //   // assert.equal(balance2, initialAmount / 2);
-
-  //   console.log("After Burn DIAM Token Balance:", balance2);
-  //   console.log("Merchant USDC Token Balance:", balance5);
-  //   console.log("Program USDC Token Balance:", balance6);
-  // });
-
-  // it("Partial Payment", async () => {
-  //   const Wallet = Keypair.generate();
-  //   const AirdropSignature = await connection.requestAirdrop(
-  //     Wallet.publicKey,
-  //     LAMPORTS_PER_SOL
-  //   );
-
-  //   await connection.confirmTransaction(AirdropSignature);
-
-  //   // Get the token account of the fromWallet address, and if it does not exist, create it
-  //   // Get the token account of the fromWallet address, and if it does not exist, create it
-  //   const TokenAccount = await getOrCreateAssociatedTokenAccount(
-  //     connection,
-  //     await randomPayer(),
-  //     diamMint,
-  //     Wallet.publicKey
-  //   );
-
-  //   const usdcTokenAccount = await getOrCreateAssociatedTokenAccount(
-  //     connection,
-  //     await randomPayer(),
-  //     usdcMint,
-  //     Wallet.publicKey
-  //   );
-
-  //   await mintTo(
-  //     connection, // connection to Solana
-  //     await randomPayer(), // randomPayer as payer for test
-  //     usdcMint, // USDC Token Mint
-  //     usdcTokenAccount.address, // User USDC Token Account (destination)
-  //     tokenAuthority, // Mint Authority (required as signer)
-  //     initialAmount
-  //   );
-
-  //   try {
-  //     await program.rpc.mintTo(new anchor.BN(initialAmount / 2), {
-  //       accounts: {
-  //         merchant: diam.publicKey,
-  //         mintPda: diamMint,
-  //         userToken: TokenAccount.address,
-  //         userUsdcToken: usdcTokenAccount.address,
-  //         user: Wallet.publicKey,
-  //         programUsdcToken: usdcPDA,
-  //         tokenProgram: TOKEN_PROGRAM_ID,
-  //       },
-  //       signers: [Wallet],
-  //     });
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-
-  //   const balance = (
-  //     await connection.getTokenAccountBalance(usdcTokenAccount.address)
-  //   ).value.amount;
-  //   console.log("Before User USDC Token Balance:", balance);
-
-  //   const balance1 = (
-  //     await connection.getTokenAccountBalance(TokenAccount.address)
-  //   ).value.amount;
-  //   console.log("Before Burn DIAM Token Balance:", balance1);
-
-  //   const Merchant = Keypair.generate();
-
-  //   const merchantUsdcTokenAccount = await getOrCreateAssociatedTokenAccount(
-  //     connection,
-  //     await randomPayer(),
-  //     usdcMint,
-  //     Merchant.publicKey
-  //   );
-
-  //   try {
-  //     await program.rpc.partialPayment(
-  //       new anchor.BN(initialAmount / 2),
-  //       new anchor.BN(initialAmount / 2),
-  //       {
+  //     try {
+  //       await program.rpc.mintTo(new anchor.BN(initialAmount), {
   //         accounts: {
+  //           merchant: diam.publicKey,
   //           mintPda: diamMint,
   //           userToken: TokenAccount.address,
   //           userUsdcToken: usdcTokenAccount.address,
+  //           user: provider.wallet.publicKey,
+  //           programUsdcToken: usdcPDA,
+  //           tokenProgram: TOKEN_PROGRAM_ID,
+  //         },
+  //       });
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+
+  //     const balance = (
+  //       await connection.getTokenAccountBalance(TokenAccount.address)
+  //     ).value.amount;
+
+  //     const balance2 = (await connection.getTokenAccountBalance(usdcPDA)).value
+  //       .amount;
+
+  //     const balance3 = (
+  //       await connection.getTokenAccountBalance(usdcTokenAccount.address)
+  //     ).value.amount;
+
+  //     console.log("userDIAM Balance:", balance);
+  //     console.log("usdcPDA Balance:", balance2);
+  //     console.log("userUSDC Balance:", balance3);
+
+  //     // assert.equal(balance, initialAmount);
+  //   });
+
+  //   // it("Mint DIAM Tokens", async () => {
+  //   //   const Wallet = Keypair.generate();
+  //   //   const AirdropSignature = await connection.requestAirdrop(
+  //   //     Wallet.publicKey,
+  //   //     LAMPORTS_PER_SOL
+  //   //   );
+
+  //   //   await connection.confirmTransaction(AirdropSignature);
+
+  //   //   // Get the token account of the fromWallet address, and if it does not exist, create it
+  //   //   // Get the token account of the fromWallet address, and if it does not exist, create it
+  //   //   const TokenAccount = await getOrCreateAssociatedTokenAccount(
+  //   //     connection,
+  //   //     await randomPayer(),
+  //   //     diamMint,
+  //   //     Wallet.publicKey
+  //   //   );
+
+  //   //   const usdcTokenAccount = await getOrCreateAssociatedTokenAccount(
+  //   //     connection,
+  //   //     await randomPayer(),
+  //   //     usdcMint,
+  //   //     Wallet.publicKey
+  //   //   );
+
+  //   //   await mintTo(
+  //   //     connection, // connection to Solana
+  //   //     await randomPayer(), // randomPayer as payer for test
+  //   //     usdcMint, // USDC Token Mint
+  //   //     usdcTokenAccount.address, // User USDC Token Account (destination)
+  //   //     tokenAuthority, // Mint Authority (required as signer)
+  //   //     initialAmount
+  //   //   );
+
+  //   //   const merchant = diam.publicKey;
+  //   //   const mintPda = diamMint;
+  //   //   const userToken = TokenAccount.address;
+  //   //   const userUsdcToken = usdcTokenAccount.address;
+  //   //   const user = Wallet.publicKey;
+  //   //   const programUsdcToken = usdcPDA;
+  //   //   const tokenProgram = TOKEN_PROGRAM_ID;
+  //   //   const programId = new PublicKey(
+  //   //     "31s721BSx3VGBed4swcAv5rs2WgK8kWEesQ6tkS4yKQ1"
+  //   //   );
+
+  //   //   const transaction = new Transaction();
+
+  //   //   const ix = createMintToInstruction(
+  //   //     {
+  //   //       merchant,
+  //   //       mintPda,
+  //   //       userToken,
+  //   //       userUsdcToken,
+  //   //       user,
+  //   //       programUsdcToken,
+  //   //     },
+  //   //     { amount: 1 }
+  //   //   );
+
+  //   //   transaction.add(ix);
+
+  //   //   const sig = await sendAndConfirmTransaction(connection, transaction, [
+  //   //     Wallet,
+  //   //   ]);
+  //   //   console.log(sig);
+
+  //   //   const balance = (
+  //   //     await connection.getTokenAccountBalance(TokenAccount.address)
+  //   //   ).value.amount;
+
+  //   //   const balance2 = (await connection.getTokenAccountBalance(usdcPDA)).value
+  //   //     .amount;
+
+  //   //   const balance3 = (
+  //   //     await connection.getTokenAccountBalance(usdcTokenAccount.address)
+  //   //   ).value.amount;
+
+  //   //   console.log("userDIAM Balance:", balance);
+  //   //   console.log("usdcPDA Balance:", balance2);
+  //   //   console.log("userUSDC Balance:", balance3);
+
+  //   //   // const instruction = new TransactionInstruction({
+  //   //   //   keys: [
+  //   //   //     {
+  //   //   //       pubkey: merchant,
+  //   //   //       isSigner: false,
+  //   //   //       isWritable: false,
+  //   //   //     },
+  //   //   //     {
+  //   //   //       pubkey: mintPda,
+  //   //   //       isSigner: false,
+  //   //   //       isWritable: true,
+  //   //   //     },
+  //   //   //     {
+  //   //   //       pubkey: userToken,
+  //   //   //       isSigner: false,
+  //   //   //       isWritable: true,
+  //   //   //     },
+  //   //   //     {
+  //   //   //       pubkey: userUsdcToken,
+  //   //   //       isSigner: false,
+  //   //   //       isWritable: true,
+  //   //   //     },
+  //   //   //     {
+  //   //   //       pubkey: user,
+  //   //   //       isSigner: true,
+  //   //   //       isWritable: false,
+  //   //   //     },
+  //   //   //     {
+  //   //   //       pubkey: programUsdcToken,
+  //   //   //       isSigner: false,
+  //   //   //       isWritable: true,
+  //   //   //     },
+  //   //   //     {
+  //   //   //       pubkey: tokenProgram,
+  //   //   //       isSigner: false,
+  //   //   //       isWritable: false,
+  //   //   //     },
+  //   //   //   ],
+  //   //   //   data: data,
+  //   //   //   programId,
+  //   //   // });
+  //   // });
+
+  //   it("Burn DIAM", async () => {
+  //     const Wallet = Keypair.generate();
+  //     const AirdropSignature = await connection.requestAirdrop(
+  //       Wallet.publicKey,
+  //       LAMPORTS_PER_SOL
+  //     );
+
+  //     await connection.confirmTransaction(AirdropSignature);
+
+  //     // Get the token account of the fromWallet address, and if it does not exist, create it
+  //     // Get the token account of the fromWallet address, and if it does not exist, create it
+  //     const TokenAccount = await getOrCreateAssociatedTokenAccount(
+  //       connection,
+  //       await randomPayer(),
+  //       diamMint,
+  //       Wallet.publicKey
+  //     );
+
+  //     const usdcTokenAccount = await getOrCreateAssociatedTokenAccount(
+  //       connection,
+  //       await randomPayer(),
+  //       usdcMint,
+  //       Wallet.publicKey
+  //     );
+
+  //     await mintTo(
+  //       connection, // connection to Solana
+  //       await randomPayer(), // randomPayer as payer for test
+  //       usdcMint, // USDC Token Mint
+  //       usdcTokenAccount.address, // User USDC Token Account (destination)
+  //       tokenAuthority, // Mint Authority (required as signer)
+  //       initialAmount
+  //     );
+
+  //     try {
+  //       await program.rpc.mintTo(new anchor.BN(initialAmount), {
+  //         accounts: {
+  //           merchant: diam.publicKey,
+  //           mintPda: diamMint,
+  //           userToken: TokenAccount.address,
+  //           userUsdcToken: usdcTokenAccount.address,
+  //           user: Wallet.publicKey,
+  //           programUsdcToken: usdcPDA,
+  //           tokenProgram: TOKEN_PROGRAM_ID,
+  //         },
+  //         signers: [Wallet],
+  //       });
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+
+  //     const balance = (
+  //       await connection.getTokenAccountBalance(TokenAccount.address)
+  //     ).value.amount;
+  //     console.log("Before Burn DIAM Token Balance:", balance);
+
+  //     const Merchant = Keypair.generate();
+
+  //     const merchantUsdcTokenAccount = await getOrCreateAssociatedTokenAccount(
+  //       connection,
+  //       await randomPayer(),
+  //       usdcMint,
+  //       Merchant.publicKey
+  //     );
+
+  //     try {
+  //       await program.rpc.burn(new anchor.BN(initialAmount / 2), {
+  //         accounts: {
+  //           mintPda: diamMint,
+  //           userToken: TokenAccount.address,
   //           user: Wallet.publicKey,
 
   //           programUsdcToken: usdcPDA,
@@ -550,34 +440,145 @@ describe("token", () => {
   //           tokenProgram: TOKEN_PROGRAM_ID,
   //         },
   //         signers: [Wallet],
-  //       }
+  //       });
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+
+  //     const balance2 = (
+  //       await connection.getTokenAccountBalance(TokenAccount.address)
+  //     ).value.amount;
+
+  //     const balance5 = (
+  //       await connection.getTokenAccountBalance(merchantUsdcTokenAccount.address)
+  //     ).value.amount;
+
+  //     const balance6 = (await connection.getTokenAccountBalance(usdcPDA)).value
+  //       .amount;
+
+  //     // assert.equal(balance2, initialAmount / 2);
+
+  //     console.log("After Burn DIAM Token Balance:", balance2);
+  //     console.log("Merchant USDC Token Balance:", balance5);
+  //     console.log("Program USDC Token Balance:", balance6);
+  //   });
+
+  //   it("Partial Payment", async () => {
+  //     const Wallet = Keypair.generate();
+  //     const AirdropSignature = await connection.requestAirdrop(
+  //       Wallet.publicKey,
+  //       LAMPORTS_PER_SOL
   //     );
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
 
-  //   const balance2 = (
-  //     await connection.getTokenAccountBalance(TokenAccount.address)
-  //   ).value.amount;
+  //     await connection.confirmTransaction(AirdropSignature);
 
-  //   const balance5 = (
-  //     await connection.getTokenAccountBalance(merchantUsdcTokenAccount.address)
-  //   ).value.amount;
+  //     // Get the token account of the fromWallet address, and if it does not exist, create it
+  //     // Get the token account of the fromWallet address, and if it does not exist, create it
+  //     const TokenAccount = await getOrCreateAssociatedTokenAccount(
+  //       connection,
+  //       await randomPayer(),
+  //       diamMint,
+  //       Wallet.publicKey
+  //     );
 
-  //   const balance6 = (await connection.getTokenAccountBalance(usdcPDA)).value
-  //     .amount;
+  //     const usdcTokenAccount = await getOrCreateAssociatedTokenAccount(
+  //       connection,
+  //       await randomPayer(),
+  //       usdcMint,
+  //       Wallet.publicKey
+  //     );
 
-  //   const balance7 = (
-  //     await connection.getTokenAccountBalance(usdcTokenAccount.address)
-  //   ).value.amount;
+  //     await mintTo(
+  //       connection, // connection to Solana
+  //       await randomPayer(), // randomPayer as payer for test
+  //       usdcMint, // USDC Token Mint
+  //       usdcTokenAccount.address, // User USDC Token Account (destination)
+  //       tokenAuthority, // Mint Authority (required as signer)
+  //       initialAmount
+  //     );
 
-  //   // assert.equal(balance2, initialAmount / 2);
+  //     try {
+  //       await program.rpc.mintTo(new anchor.BN(initialAmount / 2), {
+  //         accounts: {
+  //           merchant: diam.publicKey,
+  //           mintPda: diamMint,
+  //           userToken: TokenAccount.address,
+  //           userUsdcToken: usdcTokenAccount.address,
+  //           user: Wallet.publicKey,
+  //           programUsdcToken: usdcPDA,
+  //           tokenProgram: TOKEN_PROGRAM_ID,
+  //         },
+  //         signers: [Wallet],
+  //       });
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
 
-  //   console.log("After User USDC Token Balance:", balance7);
-  //   console.log("After Burn DIAM Token Balance:", balance2);
-  //   console.log("Merchant USDC Token Balance:", balance5);
-  //   console.log("Program USDC Token Balance:", balance6);
-  // });
+  //     const balance = (
+  //       await connection.getTokenAccountBalance(usdcTokenAccount.address)
+  //     ).value.amount;
+  //     console.log("Before User USDC Token Balance:", balance);
+
+  //     const balance1 = (
+  //       await connection.getTokenAccountBalance(TokenAccount.address)
+  //     ).value.amount;
+  //     console.log("Before Burn DIAM Token Balance:", balance1);
+
+  //     const Merchant = Keypair.generate();
+
+  //     const merchantUsdcTokenAccount = await getOrCreateAssociatedTokenAccount(
+  //       connection,
+  //       await randomPayer(),
+  //       usdcMint,
+  //       Merchant.publicKey
+  //     );
+
+  //     try {
+  //       await program.rpc.partialPayment(
+  //         new anchor.BN(initialAmount / 2),
+  //         new anchor.BN(initialAmount / 2),
+  //         {
+  //           accounts: {
+  //             mintPda: diamMint,
+  //             userToken: TokenAccount.address,
+  //             userUsdcToken: usdcTokenAccount.address,
+  //             user: Wallet.publicKey,
+
+  //             programUsdcToken: usdcPDA,
+  //             usdcMint: usdcMintAddress,
+  //             merchantUsdcToken: merchantUsdcTokenAccount.address,
+
+  //             tokenProgram: TOKEN_PROGRAM_ID,
+  //           },
+  //           signers: [Wallet],
+  //         }
+  //       );
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+
+  //     const balance2 = (
+  //       await connection.getTokenAccountBalance(TokenAccount.address)
+  //     ).value.amount;
+
+  //     const balance5 = (
+  //       await connection.getTokenAccountBalance(merchantUsdcTokenAccount.address)
+  //     ).value.amount;
+
+  //     const balance6 = (await connection.getTokenAccountBalance(usdcPDA)).value
+  //       .amount;
+
+  //     const balance7 = (
+  //       await connection.getTokenAccountBalance(usdcTokenAccount.address)
+  //     ).value.amount;
+
+  //     // assert.equal(balance2, initialAmount / 2);
+
+  //     console.log("After User USDC Token Balance:", balance7);
+  //     console.log("After Burn DIAM Token Balance:", balance2);
+  //     console.log("Merchant USDC Token Balance:", balance5);
+  //     console.log("Program USDC Token Balance:", balance6);
+  //   });
 });
 
 // @ts-ignore
@@ -589,7 +590,9 @@ describe("token", () => {
 
 // @ts-ignore
 // solana-keygen new --outfile .keys/diam_mint.json
-const diamData = JSON.parse(fs.readFileSync(".keys/diam_mint.json"));
+const diamData = JSON.parse(
+  fs.readFileSync(".keys/DiamXf1XxDSc3NA3KHhZ7Ss3s2CcwpT5SXxkrqjodNMX.json")
+);
 const diamKeypair = Keypair.fromSecretKey(new Uint8Array(diamData));
 const diamAddress = diamKeypair.publicKey;
 console.log("DIAM Merchant:", diamAddress.toString());
