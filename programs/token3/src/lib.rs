@@ -242,7 +242,7 @@ pub mod token3 {
         Ok(())
     }
 
-    //TODO: update additional fields
+    //TODO: does each field need own function to update? can inputs be conditional?
     pub fn update_token_data(ctx: Context<UpdateTokenData>, name: String, discount: u64, reward: u64) -> Result<()> {
         
         let token_data = &mut ctx.accounts.token_data;
